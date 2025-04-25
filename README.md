@@ -171,6 +171,78 @@ PATRONI_ADMIN_PASSWORD=your_encrypted_password
 
 ---
 
+## 📊 pgAdmin 連線設置
+
+### 1. 訪問 pgAdmin
+
+1. 打開瀏覽器，訪問：
+```
+http://localhost:5050
+```
+
+2. 使用以下憑證登入：
+```
+Email: ${PGADMIN_EMAIL}
+Password: ${PGADMIN_PASSWORD}
+```
+
+### 2. 添加新伺服器
+
+1. 右鍵點擊 "Servers" -> "Register" -> "Server"
+
+2. 在 "General" 標籤頁：
+   - Name: Patroni Cluster（或任何你喜歡的名稱）
+
+3. 在 "Connection" 標籤頁：
+   - Host name/address: localhost
+   - Port: 5435（HAProxy 端口）
+   - Maintenance database: postgres
+   - Username: postgres
+   - Password: ${POSTGRES_PASSWORD}
+
+4. 在 "SSL" 標籤頁：
+   - SSL mode: Prefer
+
+5. 點擊 "Save" 保存設定
+
+### 3. 驗證連線
+
+1. 展開伺服器列表，應該能看到：
+   - Databases
+   - Login/Group Roles
+   - Tablespaces
+   - Catalogs
+
+2. 檢查複製狀態：
+   - 展開 "Databases" -> "postgres" -> "Statistics"
+   - 查看 "Replication" 標籤頁
+
+### 4. 常見問題
+
+1. **連線被拒絕**：
+   - 檢查 HAProxy 是否正常運行
+   - 確認端口 5435 是否開放
+   - 驗證密碼是否正確
+
+2. **無法看到複製資訊**：
+   - 確認 Patroni 叢集是否正常運行
+   - 檢查 etcd 是否正常運行
+   - 查看 Patroni 日誌
+
+3. **SSL 錯誤**：
+   - 將 SSL mode 改為 "Prefer" 或 "Disable"
+   - 檢查 SSL 證書設定
+
+### 5. 安全建議
+
+1. 使用強密碼
+2. 定期更換密碼
+3. 限制 pgAdmin 的訪問 IP
+4. 啟用 SSL/TLS
+5. 定期備份 pgAdmin 設定
+
+---
+
 ## 🛡️ 安全建議
 
 1. 定期更換密碼
