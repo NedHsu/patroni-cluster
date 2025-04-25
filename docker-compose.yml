@@ -154,6 +154,7 @@ services:
     container_name: haproxy
     ports:
       - "5435:5435"
+      - "8404:8404"
     volumes:
       - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     networks:
