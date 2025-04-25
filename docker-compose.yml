@@ -26,7 +26,7 @@ services:
       retries: 3
 
   patroni-1:
-    image: patroni:3.2.2
+    image: ongres/patroni:3.2.2
     container_name: patroni-1
     environment:
       - PATRONI_NAME=patroni-1
@@ -55,7 +55,7 @@ services:
       retries: 3
 
   patroni-2:
-    image: patroni:3.2.2
+    image: ongres/patroni:3.2.2
     container_name: patroni-2
     environment:
       - PATRONI_NAME=patroni-2
@@ -84,7 +84,7 @@ services:
       retries: 3
 
   patroni-3:
-    image: patroni:3.2.2
+    image: ongres/patroni:3.2.2
     container_name: patroni-3
     environment:
       - PATRONI_NAME=patroni-3
