@@ -28,6 +28,7 @@
 - ✅ pgAdmin 預設帳號密碼
 - ✅ HAProxy 負載均衡設定
 - ✅ 健康檢查配置
+- ✅ 密碼生成工具
 
 ---
 
@@ -55,6 +56,8 @@ patroni-cluster/
 │   ├── patroni-1/
 │   ├── patroni-2/
 │   └── patroni-3/
+├── generate_password.py
+└── .env
 ```
 
 ---
@@ -72,13 +75,72 @@ patroni-cluster/
 
 ## 🔐 環境變數設定
 
+### 密碼生成工具
+
+我們提供了一個跨平台的密碼生成工具 `generate_password.py`，可以生成 PostgreSQL 的 SCRAM-SHA-256 加密密碼。
+
+#### 使用方法：
+
+1. **生成隨機密碼**：
+```bash
+python generate_password.py
+```
+
+2. **使用指定密碼**：
+```bash
+python generate_password.py -p "your_password"
+```
+
+3. **生成 .env 格式輸出**：
+```bash
+python generate_password.py -p "your_password" -e
+```
+
+4. **指定迭代次數**：
+```bash
+python generate_password.py -p "your_password" -i 10000
+```
+
+#### 參數說明：
+- `-p, --password`: 要加密的密碼（如果不提供，會生成隨機密碼）
+- `-i, --iterations`: PBKDF2 迭代次數（預設：4096）
+- `-e, --env`: 生成 .env 格式的輸出
+
+#### 輸出範例：
+```bash
+# 生成隨機密碼
+python generate_password.py
+生成的隨機密碼: XhdZE2WAUyibYjqLbo8Iug
+加密後的密碼: SCRAM-SHA-256$4096:...
+
+# 生成 .env 格式
+python generate_password.py -p "test123" -e
+# 將以下內容複製到 .env 檔案中：
+POSTGRES_PASSWORD=SCRAM-SHA-256$4096:...
+PATRONI_REPLICATION_PASSWORD=SCRAM-SHA-256$4096:...
+PATRONI_ADMIN_PASSWORD=SCRAM-SHA-256$4096:...
+```
+
+### 環境變數設定
+
 創建 `.env` 檔案並設定以下環境變數：
 
 ```env
-POSTGRES_PASSWORD=your_secure_password
+# PostgreSQL 密碼 (已使用 SCRAM-SHA-256 加密)
+POSTGRES_PASSWORD=your_encrypted_password
+
+# Redis 密碼
 REDIS_PASSWORD=your_redis_password
+
+# pgAdmin 設定
 PGADMIN_EMAIL=your_email@example.com
 PGADMIN_PASSWORD=your_pgadmin_password
+
+# Patroni 複製密碼
+PATRONI_REPLICATION_PASSWORD=your_encrypted_password
+
+# Patroni 管理員密碼
+PATRONI_ADMIN_PASSWORD=your_encrypted_password
 ```
 
 ---
@@ -87,8 +149,9 @@ PGADMIN_PASSWORD=your_pgadmin_password
 
 1. 設定環境變數：
    ```bash
-   cp .env.example .env
-   # 編輯 .env 檔案設定密碼
+   # 使用密碼生成工具生成密碼
+   python generate_password.py -p "your_password" -e > .env
+   # 編輯 .env 檔案設定其他環境變數
    ```
 
 2. 啟動服務：

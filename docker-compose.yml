@@ -38,6 +38,8 @@ services:
       - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-1:5432
       - PATRONI_POSTGRESQL_USERNAME=postgres
       - PATRONI_POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
+      - PATRONI_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
+      - PATRONI_ADMIN_PASSWORD=${PATRONI_ADMIN_PASSWORD}
     volumes:
       - ./patroni/patroni-1.yml:/config/patroni.yml
       - ./patroni/pg_hba.conf:/pg_hba.conf
@@ -67,6 +69,8 @@ services:
       - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-2:5432
       - PATRONI_POSTGRESQL_USERNAME=postgres
       - PATRONI_POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
+      - PATRONI_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
+      - PATRONI_ADMIN_PASSWORD=${PATRONI_ADMIN_PASSWORD}
     volumes:
       - ./patroni/patroni-2.yml:/config/patroni.yml
       - ./patroni/pg_hba.conf:/pg_hba.conf
@@ -96,6 +100,8 @@ services:
       - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-3:5432
       - PATRONI_POSTGRESQL_USERNAME=postgres
       - PATRONI_POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
+      - PATRONI_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
+      - PATRONI_ADMIN_PASSWORD=${PATRONI_ADMIN_PASSWORD}
     volumes:
       - ./patroni/patroni-3.yml:/config/patroni.yml
       - ./patroni/pg_hba.conf:/pg_hba.conf

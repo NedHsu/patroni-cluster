@@ -1,4 +1,3 @@
-
 scope: postgres-cluster
 name: patroni-3
 
@@ -17,10 +16,10 @@ postgresql:
   authentication:
     replication:
       username: replicator
-      password: rep-pass
+      password: ${PATRONI_REPLICATION_PASSWORD}
     superuser:
       username: postgres
-      password: postgres
+      password: ${POSTGRES_PASSWORD}
   parameters:
     wal_level: replica
     hot_standby: "on"
@@ -28,8 +27,8 @@ postgresql:
     max_replication_slots: 10
     wal_keep_size: 64
   pg_hba:
-    - host replication replicator 0.0.0.0/0 trust
-    - host all all 0.0.0.0/0 trust
+    - host replication replicator 0.0.0.0/0 scram-sha-256
+    - host all all 0.0.0.0/0 scram-sha-256
 
 bootstrap:
   dcs:
@@ -45,7 +44,7 @@ bootstrap:
     - data-checksums
   users:
     admin:
-      password: admin
+      password: ${PATRONI_ADMIN_PASSWORD}
       options:
         - createrole
         - createdb
