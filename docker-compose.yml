@@ -33,14 +33,6 @@ services:
     image: ongres/patroni
     container_name: patroni-1
     environment:
-      - PATRONI_NAME=patroni-1
-      - PATRONI_SCOPE=postgres-cluster
-      - PATRONI_ETCD_HOSTS=etcd:2379
-      - PATRONI_REST_API_LISTEN=0.0.0.0:8008
-      - PATRONI_POSTGRESQL_DATA_DIR=/var/lib/postgresql/data
-      - PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
-      - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-1:5432
-      - PATRONI_POSTGRESQL_USERNAME=postgres
       - PATRONI_POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
       - PATRONI_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
       - PATRONI_ADMIN_PASSWORD=${PATRONI_ADMIN_PASSWORD}
@@ -66,14 +58,6 @@ services:
     image: ongres/patroni
     container_name: patroni-2
     environment:
-      - PATRONI_NAME=patroni-2
-      - PATRONI_SCOPE=postgres-cluster
-      - PATRONI_ETCD_HOSTS=etcd:2379
-      - PATRONI_REST_API_LISTEN=0.0.0.0:8008
-      - PATRONI_POSTGRESQL_DATA_DIR=/var/lib/postgresql/data
-      - PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
-      - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-2:5432
-      - PATRONI_POSTGRESQL_USERNAME=postgres
       - PATRONI_POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
       - PATRONI_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
       - PATRONI_ADMIN_PASSWORD=${PATRONI_ADMIN_PASSWORD}
@@ -99,14 +83,6 @@ services:
     image: ongres/patroni
     container_name: patroni-3
     environment:
-      - PATRONI_NAME=patroni-3
-      - PATRONI_SCOPE=postgres-cluster
-      - PATRONI_ETCD_HOSTS=etcd:2379
-      - PATRONI_REST_API_LISTEN=0.0.0.0:8008
-      - PATRONI_POSTGRESQL_DATA_DIR=/var/lib/postgresql/data
-      - PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
-      - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-3:5432
-      - PATRONI_POSTGRESQL_USERNAME=postgres
       - PATRONI_POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
       - PATRONI_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
       - PATRONI_ADMIN_PASSWORD=${PATRONI_ADMIN_PASSWORD}
