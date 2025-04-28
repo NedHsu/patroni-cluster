@@ -17,6 +17,9 @@ etcd:
 restapi:
   listen: 0.0.0.0:8008
   connect_address: patroni-2:8008
+  authentication:
+    username: admin
+    password: ${PATRONI_ADMIN_PASSWORD}
 
 postgresql:
   listen: 0.0.0.0:5432
