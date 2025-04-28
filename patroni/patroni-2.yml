@@ -8,6 +8,10 @@ etcd3:
   use_proxies: false
   retry_timeout: 10
   ttl: 30
+  allow_reconnect: true
+  srv: false
+  srv_domain: null
+  use_grpc: false
 
 restapi:
   listen: 0.0.0.0:8008
