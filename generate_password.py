@@ -5,6 +5,8 @@ import hmac
 import secrets
 import argparse
 import re
+import json
+import os
 from typing import Tuple
 
 def generate_salt() -> bytes:
@@ -61,12 +63,60 @@ def generate_password(prefix: str = "", length: int = 16) -> str:
         return f"{prefix}_{secrets.token_urlsafe(length)}"
     return secrets.token_urlsafe(length)
 
+def generate_servers_json(password: str) -> dict:
+    """生成 pgAdmin servers.json 內容"""
+    return {
+        "Servers": {
+            "1": {
+                "Name": "Patroni Cluster (HAProxy)",
+                "Group": "Patroni",
+                "Host": "haproxy",
+                "Port": 5435,
+                "MaintenanceDB": "postgres",
+                "Username": "postgres",
+                "Password": password,
+                "SSLMode": "prefer"
+            },
+            "2": {
+                "Name": "Patroni-1 (Primary)",
+                "Group": "Patroni",
+                "Host": "patroni-1",
+                "Port": 5432,
+                "MaintenanceDB": "postgres",
+                "Username": "postgres",
+                "Password": password,
+                "SSLMode": "prefer"
+            },
+            "3": {
+                "Name": "Patroni-2 (Replica)",
+                "Group": "Patroni",
+                "Host": "patroni-2",
+                "Port": 5432,
+                "MaintenanceDB": "postgres",
+                "Username": "postgres",
+                "Password": password,
+                "SSLMode": "prefer"
+            },
+            "4": {
+                "Name": "Patroni-3 (Replica)",
+                "Group": "Patroni",
+                "Host": "patroni-3",
+                "Port": 5432,
+                "MaintenanceDB": "postgres",
+                "Username": "postgres",
+                "Password": password,
+                "SSLMode": "prefer"
+            }
+        }
+    }
+
 def main():
-    parser = argparse.ArgumentParser(description='生成 PostgreSQL SCRAM-SHA-256 格式的密碼')
-    parser.add_argument('--password', '-p', help='要加密的密碼')
+    parser = argparse.ArgumentParser(description='生成 PostgreSQL 密碼')
+    parser.add_argument('--password', '-p', help='要使用的密碼')
     parser.add_argument('--iterations', '-i', type=int, default=4096, help='PBKDF2 迭代次數 (預設: 4096)')
     parser.add_argument('--env', '-e', action='store_true', help='生成 .env 格式的輸出')
     parser.add_argument('--prefix', help='密碼前綴')
+    parser.add_argument('--output-dir', '-o', default='.', help='輸出目錄')
     
     args = parser.parse_args()
     
@@ -87,22 +137,25 @@ def main():
         replication_password = f"{base_password}_repl"
         admin_password = f"{base_password}_admin"
     
-    # 生成加密密碼
-    postgres_encrypted = generate_scram_password(postgres_password, args.iterations)
-    replication_encrypted = generate_scram_password(replication_password, args.iterations)
-    admin_encrypted = generate_scram_password(admin_password, args.iterations)
-    
     if args.env:
-        # 生成 .env 格式的輸出，處理特殊符號
+        # 生成 .env 格式的輸出，使用明碼
         print("\n# 將以下內容複製到 .env 檔案中：")
-        print(f"POSTGRES_PASSWORD={escape_env_value(postgres_encrypted)}")
-        print(f"PATRONI_REPLICATION_PASSWORD={escape_env_value(replication_encrypted)}")
-        print(f"PATRONI_ADMIN_PASSWORD={escape_env_value(admin_encrypted)}")
+        print(f"POSTGRES_PASSWORD={escape_env_value(postgres_password)}")
+        print(f"PATRONI_REPLICATION_PASSWORD={escape_env_value(replication_password)}")
+        print(f"PATRONI_ADMIN_PASSWORD={escape_env_value(admin_password)}")
+        
+        # 生成 servers.json，使用相同的明碼
+        servers_json = generate_servers_json(postgres_password)
+        servers_json_path = os.path.join(args.output_dir, 'pgadmin', 'servers.json')
+        os.makedirs(os.path.dirname(servers_json_path), exist_ok=True)
+        with open(servers_json_path, 'w') as f:
+            json.dump(servers_json, f, indent=4)
+        print(f"\n已生成 servers.json 到 {servers_json_path}")
     else:
-        print("\n加密後的密碼:")
-        print(f"PostgreSQL: {postgres_encrypted}")
-        print(f"Replication: {replication_encrypted}")
-        print(f"Admin: {admin_encrypted}")
+        print("\n生成的密碼:")
+        print(f"PostgreSQL: {postgres_password}")
+        print(f"Replication: {replication_password}")
+        print(f"Admin: {admin_password}")
 
 if __name__ == '__main__':
     main() 
