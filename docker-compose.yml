@@ -144,6 +144,8 @@ services:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
       - PGADMIN_SERVER_JSON_FILE=/pgadmin4/servers.json
+      - PGADMIN_CONFIG_SERVER_MODE=False
+      - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
     ports:
       - "5050:80"
     networks:
@@ -156,6 +158,11 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+    depends_on:
+      - haproxy
+      - patroni-1
+      - patroni-2
+      - patroni-3
 
   haproxy:
     image: haproxy:2.8
