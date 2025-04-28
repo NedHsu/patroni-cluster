@@ -53,6 +53,9 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
+    depends_on:
+      etcd:
+        condition: service_healthy
 
   patroni-2:
     image: ongres/patroni:latest
@@ -78,6 +81,9 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
+    depends_on:
+      etcd:
+        condition: service_healthy
 
   patroni-3:
     image: ongres/patroni:latest
@@ -103,6 +109,9 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
+    depends_on:
+      etcd:
+        condition: service_healthy
 
   redis:
     image: redis:7.2
