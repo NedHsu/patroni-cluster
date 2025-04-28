@@ -2,7 +2,8 @@ scope: postgres-cluster
 name: patroni-2
 
 etcd:
-  hosts: etcd:2379
+  hosts:
+    - etcd:2379
   protocol: http
   api_version: v3
   use_proxies: false
