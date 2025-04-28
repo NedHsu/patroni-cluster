@@ -1,7 +1,7 @@
 scope: postgres-cluster
 name: patroni-3
 
-etcd3:
+etcd:
   hosts:
     - etcd:2379
   protocol: http
@@ -12,6 +12,7 @@ etcd3:
   srv: false
   srv_domain: null
   use_grpc: false
+  api_version: v3
 
 restapi:
   listen: 0.0.0.0:8008
