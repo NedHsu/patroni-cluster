@@ -186,6 +186,17 @@ Email: ${PGADMIN_EMAIL}
 Password: ${PGADMIN_PASSWORD}
 ```
 
+3. 自動導入設定
+   我們提供了自動導入的伺服器設定檔 `pgadmin/servers.json`，它會自動配置：
+   - HAProxy 負載均衡連線
+   - 所有 Patroni 節點的直接連線
+   - 適當的 SSL 設定
+   登入後，你應該能看到以下伺服器：
+   - Patroni Cluster (HAProxy)
+   - Patroni-1 (Primary)
+   - Patroni-2 (Replica)
+   - Patroni-3 (Replica)
+
 ### 2. 添加新伺服器
 
 1. 右鍵點擊 "Servers" -> "Register" -> "Server"

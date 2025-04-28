@@ -1,0 +1,44 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "Patroni Cluster (HAProxy)",
+            "Group": "Patroni",
+            "Host": "haproxy",
+            "Port": 5435,
+            "MaintenanceDB": "postgres",
+            "Username": "postgres",
+            "Password": "${POSTGRES_PASSWORD}",
+            "SSLMode": "prefer"
+        },
+        "2": {
+            "Name": "Patroni-1 (Primary)",
+            "Group": "Patroni",
+            "Host": "patroni-1",
+            "Port": 5432,
+            "MaintenanceDB": "postgres",
+            "Username": "postgres",
+            "Password": "${POSTGRES_PASSWORD}",
+            "SSLMode": "prefer"
+        },
+        "3": {
+            "Name": "Patroni-2 (Replica)",
+            "Group": "Patroni",
+            "Host": "patroni-2",
+            "Port": 5432,
+            "MaintenanceDB": "postgres",
+            "Username": "postgres",
+            "Password": "${POSTGRES_PASSWORD}",
+            "SSLMode": "prefer"
+        },
+        "4": {
+            "Name": "Patroni-3 (Replica)",
+            "Group": "Patroni",
+            "Host": "patroni-3",
+            "Port": 5432,
+            "MaintenanceDB": "postgres",
+            "Username": "postgres",
+            "Password": "${POSTGRES_PASSWORD}",
+            "SSLMode": "prefer"
+        }
+    }
+} 

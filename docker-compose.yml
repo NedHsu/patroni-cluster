@@ -143,12 +143,14 @@ services:
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+      - PGADMIN_SERVER_JSON_FILE=/pgadmin4/servers.json
     ports:
       - "5050:80"
     networks:
       - patroni-net
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:ro
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80/misc/ping"]
       interval: 30s
