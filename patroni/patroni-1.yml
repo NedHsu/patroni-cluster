@@ -1,7 +1,7 @@
 scope: postgres-cluster
 name: patroni-1
 
-etcd3:
+etcd:
   hosts:
     - etcd:2379
   protocol: http
