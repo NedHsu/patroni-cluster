@@ -3,6 +3,8 @@ name: patroni-1
 
 etcd:
   host: etcd:2379
+  protocol: http
+  api_version: v3
 
 restapi:
   listen: 0.0.0.0:8008
