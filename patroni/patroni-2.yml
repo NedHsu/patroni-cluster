@@ -1,11 +1,10 @@
 scope: postgres-cluster
 name: patroni-2
 
-etcd:
+etcd3:
   hosts:
     - etcd:2379
   protocol: http
-  api_version: v3
   use_proxies: false
   retry_timeout: 10
   ttl: 30
