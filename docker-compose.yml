@@ -30,7 +30,7 @@ services:
       retries: 3
 
   patroni-1:
-    image: ghcr.io/patroni/patroni:latest
+    image: registry.opensource.zalan.do/acid/spilo-14:latest
     container_name: patroni-1
     environment:
       - PATRONI_NAME=patroni-1
@@ -81,7 +81,7 @@ services:
         condition: service_healthy
 
   patroni-2:
-    image: ghcr.io/patroni/patroni:latest
+    image: registry.opensource.zalan.do/acid/spilo-14:latest
     container_name: patroni-2
     environment:
       - PATRONI_NAME=patroni-2
@@ -132,7 +132,7 @@ services:
         condition: service_healthy
 
   patroni-3:
-    image: ghcr.io/patroni/patroni:latest
+    image: registry.opensource.zalan.do/acid/spilo-14:latest
     container_name: patroni-3
     environment:
       - PATRONI_NAME=patroni-3
