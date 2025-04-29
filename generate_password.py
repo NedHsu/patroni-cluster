@@ -48,6 +48,12 @@ def generate_scram_password(password: str, iterations: int = 4096) -> str:
     # 組合 SCRAM-SHA-256 格式的密碼
     return f"SCRAM-SHA-256${iterations}:{salt_b64}${stored_key_b64}:{server_key_b64}"
 
+def generate_md5_password(password: str, username: str) -> str:
+    """生成 PostgreSQL MD5 格式的密碼"""
+    # MD5 格式：md5 + MD5(password + username)
+    md5_hash = hashlib.md5((password + username).encode('utf-8')).hexdigest()
+    return f"md5{md5_hash}"
+
 def escape_env_value(value: str) -> str:
     """處理 .env 檔案中的特殊符號"""
     # 如果值包含特殊符號，用雙引號包起來
@@ -117,6 +123,8 @@ def main():
     parser.add_argument('--env', '-e', action='store_true', help='生成 .env 格式的輸出')
     parser.add_argument('--prefix', help='密碼前綴')
     parser.add_argument('--output-dir', '-o', default='.', help='輸出目錄')
+    parser.add_argument('--method', '-m', choices=['scram-sha-256', 'md5'], default='scram-sha-256',
+                      help='密碼加密方式 (預設: scram-sha-256)')
     
     args = parser.parse_args()
     
@@ -138,13 +146,23 @@ def main():
         admin_password = f"{base_password}_admin"
     
     if args.env:
-        # 生成 .env 格式的輸出，使用明碼
+        # 根據加密方式生成密碼
+        if args.method == 'md5':
+            postgres_password = generate_md5_password(postgres_password, 'postgres')
+            replication_password = generate_md5_password(replication_password, 'replicator')
+            admin_password = generate_md5_password(admin_password, 'admin')
+        else:
+            postgres_password = generate_scram_password(postgres_password, args.iterations)
+            replication_password = generate_scram_password(replication_password, args.iterations)
+            admin_password = generate_scram_password(admin_password, args.iterations)
+        
+        # 生成 .env 格式的輸出
         print("\n# 將以下內容複製到 .env 檔案中：")
         print(f"POSTGRES_PASSWORD={escape_env_value(postgres_password)}")
         print(f"PATRONI_REPLICATION_PASSWORD={escape_env_value(replication_password)}")
         print(f"PATRONI_ADMIN_PASSWORD={escape_env_value(admin_password)}")
         
-        # 生成 servers.json，使用相同的明碼
+        # 生成 servers.json，使用相同的密碼
         servers_json = generate_servers_json(postgres_password)
         servers_json_path = os.path.join(args.output_dir, 'pgadmin', 'servers.json')
         os.makedirs(os.path.dirname(servers_json_path), exist_ok=True)
