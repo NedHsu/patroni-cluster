@@ -31,6 +31,7 @@ services:
 
   patroni-1:
     image: registry.opensource.zalan.do/acid/spilo-14:latest
+    platform: linux/amd64
     container_name: patroni-1
     environment:
       - PATRONI_NAME=patroni-1
@@ -58,6 +59,7 @@ services:
 
   patroni-2:
     image: registry.opensource.zalan.do/acid/spilo-14:latest
+    platform: linux/amd64
     container_name: patroni-2
     environment:
       - PATRONI_NAME=patroni-2
@@ -85,6 +87,7 @@ services:
 
   patroni-3:
     image: registry.opensource.zalan.do/acid/spilo-14:latest
+    platform: linux/amd64
     container_name: patroni-3
     environment:
       - PATRONI_NAME=patroni-3
