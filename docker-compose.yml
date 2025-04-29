@@ -30,7 +30,7 @@ services:
       retries: 3
 
   patroni-1:
-    image: ongres/patroni:latest
+    image: ghcr.io/patroni/patroni:latest
     container_name: patroni-1
     environment:
       - PATRONI_NAME=patroni-1
@@ -42,7 +42,7 @@ services:
       - PATRONI_ETCD_TTL=30
       - PATRONI_ETCD_ALLOW_RECONNECT=true
       - PATRONI_ETCD_USE_GRPC=false
-      - PATRONI_ETCD_URL=http://etcd:2379
+      - PATRONI_ETCD_API_VERSION=v3
       - PATRONI_REST_API_LISTEN=0.0.0.0:8008
       - PATRONI_REST_API_CONNECT_ADDRESS=patroni-1:8008
       - PATRONI_REST_API_USERNAME=admin
@@ -81,7 +81,7 @@ services:
         condition: service_healthy
 
   patroni-2:
-    image: ongres/patroni:latest
+    image: ghcr.io/patroni/patroni:latest
     container_name: patroni-2
     environment:
       - PATRONI_NAME=patroni-2
@@ -93,7 +93,7 @@ services:
       - PATRONI_ETCD_TTL=30
       - PATRONI_ETCD_ALLOW_RECONNECT=true
       - PATRONI_ETCD_USE_GRPC=false
-      - PATRONI_ETCD_URL=http://etcd:2379
+      - PATRONI_ETCD_API_VERSION=v3
       - PATRONI_REST_API_LISTEN=0.0.0.0:8008
       - PATRONI_REST_API_CONNECT_ADDRESS=patroni-2:8008
       - PATRONI_REST_API_USERNAME=admin
@@ -132,7 +132,7 @@ services:
         condition: service_healthy
 
   patroni-3:
-    image: ongres/patroni:latest
+    image: ghcr.io/patroni/patroni:latest
     container_name: patroni-3
     environment:
       - PATRONI_NAME=patroni-3
@@ -144,7 +144,7 @@ services:
       - PATRONI_ETCD_TTL=30
       - PATRONI_ETCD_ALLOW_RECONNECT=true
       - PATRONI_ETCD_USE_GRPC=false
-      - PATRONI_ETCD_URL=http://etcd:2379
+      - PATRONI_ETCD_API_VERSION=v3
       - PATRONI_REST_API_LISTEN=0.0.0.0:8008
       - PATRONI_REST_API_CONNECT_ADDRESS=patroni-3:8008
       - PATRONI_REST_API_USERNAME=admin
