@@ -36,46 +36,22 @@ services:
       - PATRONI_NAME=patroni-1
       - PATRONI_SCOPE=postgres-cluster
       - PATRONI_ETCD_HOSTS=etcd:2379
-      - PATRONI_ETCD_PROTOCOL=http
-      - PATRONI_ETCD_USE_PROXIES=false
-      - PATRONI_ETCD_RETRY_TIMEOUT=10
-      - PATRONI_ETCD_TTL=30
-      - PATRONI_ETCD_ALLOW_RECONNECT=true
-      - PATRONI_ETCD_USE_GRPC=false
-      - PATRONI_ETCD_API_VERSION=v3
-      - PATRONI_REST_API_LISTEN=0.0.0.0:8008
-      - PATRONI_REST_API_CONNECT_ADDRESS=patroni-1:8008
-      - PATRONI_REST_API_USERNAME=admin
-      - PATRONI_REST_API_PASSWORD=${PATRONI_ADMIN_PASSWORD}
-      - PATRONI_POSTGRESQL_DATA_DIR=/var/lib/postgresql/data
+      - PATRONI_ETCD_URL=http://etcd:2379
+      - PATRONI_RESTAPI_LISTEN=0.0.0.0:8008
+      - PATRONI_RESTAPI_CONNECT_ADDRESS=patroni-1:8008
       - PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
       - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-1:5432
-      - PATRONI_POSTGRESQL_USERNAME=postgres
-      - PATRONI_POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
-      - PATRONI_REPLICATION_USERNAME=replicator
+      - PATRONI_POSTGRESQL_DATA_DIR=/home/postgres/pgdata/pgroot/data
+      - PATRONI_SUPERUSER_PASSWORD=${POSTGRES_PASSWORD}
       - PATRONI_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
       - PATRONI_ADMIN_PASSWORD=${PATRONI_ADMIN_PASSWORD}
-      - PATRONI_POSTGRESQL_AUTHENTICATION_SUPERUSER_USERNAME=postgres
-      - PATRONI_POSTGRESQL_AUTHENTICATION_SUPERUSER_PASSWORD=${POSTGRES_PASSWORD}
-      - PATRONI_POSTGRESQL_AUTHENTICATION_REPLICATION_USERNAME=replicator
-      - PATRONI_POSTGRESQL_AUTHENTICATION_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
-      - ETCDCTL_API=3
     volumes:
-      - ./patroni/patroni-1.yml:/config/patroni.yml
-      - ./patroni/pg_hba.conf:/pg_hba.conf
-      - ./data/patroni-1:/var/lib/postgresql/data
+      - ./data/patroni-1:/home/postgres/pgdata
     networks:
       - patroni-net
     ports:
       - "5432:5432"
       - "8008:8008"
-    command: ["/bin/sh", "-c", "PATRONI_CONFIG_FILE=/config/patroni.yml patroni"]
-    healthcheck:
-      test: ["CMD-SHELL", "curl -s http://localhost:8008/health | grep -q 'running'"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
     depends_on:
       etcd:
         condition: service_healthy
@@ -87,46 +63,22 @@ services:
       - PATRONI_NAME=patroni-2
       - PATRONI_SCOPE=postgres-cluster
       - PATRONI_ETCD_HOSTS=etcd:2379
-      - PATRONI_ETCD_PROTOCOL=http
-      - PATRONI_ETCD_USE_PROXIES=false
-      - PATRONI_ETCD_RETRY_TIMEOUT=10
-      - PATRONI_ETCD_TTL=30
-      - PATRONI_ETCD_ALLOW_RECONNECT=true
-      - PATRONI_ETCD_USE_GRPC=false
-      - PATRONI_ETCD_API_VERSION=v3
-      - PATRONI_REST_API_LISTEN=0.0.0.0:8008
-      - PATRONI_REST_API_CONNECT_ADDRESS=patroni-2:8008
-      - PATRONI_REST_API_USERNAME=admin
-      - PATRONI_REST_API_PASSWORD=${PATRONI_ADMIN_PASSWORD}
-      - PATRONI_POSTGRESQL_DATA_DIR=/var/lib/postgresql/data
+      - PATRONI_ETCD_URL=http://etcd:2379
+      - PATRONI_RESTAPI_LISTEN=0.0.0.0:8008
+      - PATRONI_RESTAPI_CONNECT_ADDRESS=patroni-2:8008
       - PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
       - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-2:5432
-      - PATRONI_POSTGRESQL_USERNAME=postgres
-      - PATRONI_POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
-      - PATRONI_REPLICATION_USERNAME=replicator
+      - PATRONI_POSTGRESQL_DATA_DIR=/home/postgres/pgdata/pgroot/data
+      - PATRONI_SUPERUSER_PASSWORD=${POSTGRES_PASSWORD}
       - PATRONI_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
       - PATRONI_ADMIN_PASSWORD=${PATRONI_ADMIN_PASSWORD}
-      - PATRONI_POSTGRESQL_AUTHENTICATION_SUPERUSER_USERNAME=postgres
-      - PATRONI_POSTGRESQL_AUTHENTICATION_SUPERUSER_PASSWORD=${POSTGRES_PASSWORD}
-      - PATRONI_POSTGRESQL_AUTHENTICATION_REPLICATION_USERNAME=replicator
-      - PATRONI_POSTGRESQL_AUTHENTICATION_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
-      - ETCDCTL_API=3
     volumes:
-      - ./patroni/patroni-2.yml:/config/patroni.yml
-      - ./patroni/pg_hba.conf:/pg_hba.conf
-      - ./data/patroni-2:/var/lib/postgresql/data
+      - ./data/patroni-2:/home/postgres/pgdata
     networks:
       - patroni-net
     ports:
       - "5433:5432"
       - "8009:8008"
-    command: ["/bin/sh", "-c", "PATRONI_CONFIG_FILE=/config/patroni.yml patroni"]
-    healthcheck:
-      test: ["CMD-SHELL", "curl -s http://localhost:8008/health | grep -q 'running'"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
     depends_on:
       etcd:
         condition: service_healthy
@@ -138,46 +90,22 @@ services:
       - PATRONI_NAME=patroni-3
       - PATRONI_SCOPE=postgres-cluster
       - PATRONI_ETCD_HOSTS=etcd:2379
-      - PATRONI_ETCD_PROTOCOL=http
-      - PATRONI_ETCD_USE_PROXIES=false
-      - PATRONI_ETCD_RETRY_TIMEOUT=10
-      - PATRONI_ETCD_TTL=30
-      - PATRONI_ETCD_ALLOW_RECONNECT=true
-      - PATRONI_ETCD_USE_GRPC=false
-      - PATRONI_ETCD_API_VERSION=v3
-      - PATRONI_REST_API_LISTEN=0.0.0.0:8008
-      - PATRONI_REST_API_CONNECT_ADDRESS=patroni-3:8008
-      - PATRONI_REST_API_USERNAME=admin
-      - PATRONI_REST_API_PASSWORD=${PATRONI_ADMIN_PASSWORD}
-      - PATRONI_POSTGRESQL_DATA_DIR=/var/lib/postgresql/data
+      - PATRONI_ETCD_URL=http://etcd:2379
+      - PATRONI_RESTAPI_LISTEN=0.0.0.0:8008
+      - PATRONI_RESTAPI_CONNECT_ADDRESS=patroni-3:8008
       - PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
       - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-3:5432
-      - PATRONI_POSTGRESQL_USERNAME=postgres
-      - PATRONI_POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
-      - PATRONI_REPLICATION_USERNAME=replicator
+      - PATRONI_POSTGRESQL_DATA_DIR=/home/postgres/pgdata/pgroot/data
+      - PATRONI_SUPERUSER_PASSWORD=${POSTGRES_PASSWORD}
       - PATRONI_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
       - PATRONI_ADMIN_PASSWORD=${PATRONI_ADMIN_PASSWORD}
-      - PATRONI_POSTGRESQL_AUTHENTICATION_SUPERUSER_USERNAME=postgres
-      - PATRONI_POSTGRESQL_AUTHENTICATION_SUPERUSER_PASSWORD=${POSTGRES_PASSWORD}
-      - PATRONI_POSTGRESQL_AUTHENTICATION_REPLICATION_USERNAME=replicator
-      - PATRONI_POSTGRESQL_AUTHENTICATION_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
-      - ETCDCTL_API=3
     volumes:
-      - ./patroni/patroni-3.yml:/config/patroni.yml
-      - ./patroni/pg_hba.conf:/pg_hba.conf
-      - ./data/patroni-3:/var/lib/postgresql/data
+      - ./data/patroni-3:/home/postgres/pgdata
     networks:
       - patroni-net
     ports:
       - "5434:5432"
       - "8010:8008"
-    command: ["/bin/sh", "-c", "PATRONI_CONFIG_FILE=/config/patroni.yml patroni"]
-    healthcheck:
-      test: ["CMD-SHELL", "curl -s http://localhost:8008/health | grep -q 'running'"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
     depends_on:
       etcd:
         condition: service_healthy
