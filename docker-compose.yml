@@ -43,9 +43,14 @@ services:
       - PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
       - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-1:5432
       - PATRONI_POSTGRESQL_DATA_DIR=/home/postgres/pgdata/pgroot/data
+      - PATRONI_SUPERUSER_USERNAME=postgres
       - PATRONI_SUPERUSER_PASSWORD=${POSTGRES_PASSWORD}
+      - PATRONI_REPLICATION_USERNAME=replicator
       - PATRONI_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
+      - PATRONI_ADMIN_USERNAME=admin
       - PATRONI_ADMIN_PASSWORD=${PATRONI_ADMIN_PASSWORD}
+      - PATRONI_POSTGRESQL_PG_HBA=host all all 0.0.0.0/0 scram-sha-256
+      - PATRONI_POSTGRESQL_PG_HBA+=host replication replicator 0.0.0.0/0 scram-sha-256
     volumes:
       - ./data/patroni-1:/home/postgres/pgdata
     networks:
@@ -71,9 +76,14 @@ services:
       - PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
       - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-2:5432
       - PATRONI_POSTGRESQL_DATA_DIR=/home/postgres/pgdata/pgroot/data
+      - PATRONI_SUPERUSER_USERNAME=postgres
       - PATRONI_SUPERUSER_PASSWORD=${POSTGRES_PASSWORD}
+      - PATRONI_REPLICATION_USERNAME=replicator
       - PATRONI_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
+      - PATRONI_ADMIN_USERNAME=admin
       - PATRONI_ADMIN_PASSWORD=${PATRONI_ADMIN_PASSWORD}
+      - PATRONI_POSTGRESQL_PG_HBA=host all all 0.0.0.0/0 scram-sha-256
+      - PATRONI_POSTGRESQL_PG_HBA+=host replication replicator 0.0.0.0/0 scram-sha-256
     volumes:
       - ./data/patroni-2:/home/postgres/pgdata
     networks:
@@ -99,9 +109,14 @@ services:
       - PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
       - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-3:5432
       - PATRONI_POSTGRESQL_DATA_DIR=/home/postgres/pgdata/pgroot/data
+      - PATRONI_SUPERUSER_USERNAME=postgres
       - PATRONI_SUPERUSER_PASSWORD=${POSTGRES_PASSWORD}
+      - PATRONI_REPLICATION_USERNAME=replicator
       - PATRONI_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
+      - PATRONI_ADMIN_USERNAME=admin
       - PATRONI_ADMIN_PASSWORD=${PATRONI_ADMIN_PASSWORD}
+      - PATRONI_POSTGRESQL_PG_HBA=host all all 0.0.0.0/0 scram-sha-256
+      - PATRONI_POSTGRESQL_PG_HBA+=host replication replicator 0.0.0.0/0 scram-sha-256
     volumes:
       - ./data/patroni-3:/home/postgres/pgdata
     networks:
