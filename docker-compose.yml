@@ -35,20 +35,20 @@ services:
     container_name: patroni-1
     environment:
       - PATRONI_NAME=patroni-1
-      - PATRONI_SCOPE=postgres-cluster
-      - PATRONI_ETCD_HOSTS=etcd:2379
-      - PATRONI_ETCD_URL=http://etcd:2379
+      - SCOPE=postgres-cluster
+      - ETCD_HOSTS=etcd:2379
+      - ETCD_URL=http://etcd:2379
       - PATRONI_RESTAPI_LISTEN=0.0.0.0:8008
       - PATRONI_RESTAPI_CONNECT_ADDRESS=patroni-1:8008
       - PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
       - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-1:5432
-      - PATRONI_POSTGRESQL_DATA_DIR=/home/postgres/pgdata/pgroot/data
-      - PATRONI_SUPERUSER_USERNAME=postgres
-      - PATRONI_SUPERUSER_PASSWORD=${POSTGRES_PASSWORD}
-      - PATRONI_REPLICATION_USERNAME=replicator
-      - PATRONI_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
-      - PATRONI_ADMIN_USERNAME=admin
-      - PATRONI_ADMIN_PASSWORD=${PATRONI_ADMIN_PASSWORD}
+      - PGDATA=/home/postgres/pgdata
+      - PGUSER_SUPERUSER=postgres
+      - PGPASSWORD_SUPERUSER=${POSTGRES_PASSWORD}
+      - PGUSER_STANDBY=replicator
+      - PGPASSWORD_STANDBY=${PATRONI_REPLICATION_PASSWORD}
+      - PGUSER_ADMIN=admin
+      - PGPASSWORD_ADMIN=${PATRONI_ADMIN_PASSWORD}
       - PATRONI_POSTGRESQL_PG_HBA=local all all trust
       - PATRONI_POSTGRESQL_PG_HBA+=host all all 127.0.0.1/32 scram-sha-256
       - PATRONI_POSTGRESQL_PG_HBA+=host all all ::1/128 scram-sha-256
@@ -71,20 +71,20 @@ services:
     container_name: patroni-2
     environment:
       - PATRONI_NAME=patroni-2
-      - PATRONI_SCOPE=postgres-cluster
-      - PATRONI_ETCD_HOSTS=etcd:2379
-      - PATRONI_ETCD_URL=http://etcd:2379
+      - SCOPE=postgres-cluster
+      - ETCD_HOSTS=etcd:2379
+      - ETCD_URL=http://etcd:2379
       - PATRONI_RESTAPI_LISTEN=0.0.0.0:8008
       - PATRONI_RESTAPI_CONNECT_ADDRESS=patroni-2:8008
       - PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
       - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-2:5432
-      - PATRONI_POSTGRESQL_DATA_DIR=/home/postgres/pgdata/pgroot/data
-      - PATRONI_SUPERUSER_USERNAME=postgres
-      - PATRONI_SUPERUSER_PASSWORD=${POSTGRES_PASSWORD}
-      - PATRONI_REPLICATION_USERNAME=replicator
-      - PATRONI_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
-      - PATRONI_ADMIN_USERNAME=admin
-      - PATRONI_ADMIN_PASSWORD=${PATRONI_ADMIN_PASSWORD}
+      - PGDATA=/home/postgres/pgdata
+      - PGUSER_SUPERUSER=postgres
+      - PGPASSWORD_SUPERUSER=${POSTGRES_PASSWORD}
+      - PGUSER_STANDBY=replicator
+      - PGPASSWORD_STANDBY=${PATRONI_REPLICATION_PASSWORD}
+      - PGUSER_ADMIN=admin
+      - PGPASSWORD_ADMIN=${PATRONI_ADMIN_PASSWORD}
       - PATRONI_POSTGRESQL_PG_HBA=local all all trust
       - PATRONI_POSTGRESQL_PG_HBA+=host all all 127.0.0.1/32 scram-sha-256
       - PATRONI_POSTGRESQL_PG_HBA+=host all all ::1/128 scram-sha-256
@@ -107,20 +107,20 @@ services:
     container_name: patroni-3
     environment:
       - PATRONI_NAME=patroni-3
-      - PATRONI_SCOPE=postgres-cluster
-      - PATRONI_ETCD_HOSTS=etcd:2379
-      - PATRONI_ETCD_URL=http://etcd:2379
+      - SCOPE=postgres-cluster
+      - ETCD_HOSTS=etcd:2379
+      - ETCD_URL=http://etcd:2379
       - PATRONI_RESTAPI_LISTEN=0.0.0.0:8008
       - PATRONI_RESTAPI_CONNECT_ADDRESS=patroni-3:8008
       - PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
       - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-3:5432
-      - PATRONI_POSTGRESQL_DATA_DIR=/home/postgres/pgdata/pgroot/data
-      - PATRONI_SUPERUSER_USERNAME=postgres
-      - PATRONI_SUPERUSER_PASSWORD=${POSTGRES_PASSWORD}
-      - PATRONI_REPLICATION_USERNAME=replicator
-      - PATRONI_REPLICATION_PASSWORD=${PATRONI_REPLICATION_PASSWORD}
-      - PATRONI_ADMIN_USERNAME=admin
-      - PATRONI_ADMIN_PASSWORD=${PATRONI_ADMIN_PASSWORD}
+      - PGDATA=/home/postgres/pgdata
+      - PGUSER_SUPERUSER=postgres
+      - PGPASSWORD_SUPERUSER=${POSTGRES_PASSWORD}
+      - PGUSER_STANDBY=replicator
+      - PGPASSWORD_STANDBY=${PATRONI_REPLICATION_PASSWORD}
+      - PGUSER_ADMIN=admin
+      - PGPASSWORD_ADMIN=${PATRONI_ADMIN_PASSWORD}
       - PATRONI_POSTGRESQL_PG_HBA=local all all trust
       - PATRONI_POSTGRESQL_PG_HBA+=host all all 127.0.0.1/32 scram-sha-256
       - PATRONI_POSTGRESQL_PG_HBA+=host all all ::1/128 scram-sha-256
