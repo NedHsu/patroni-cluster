@@ -35,14 +35,13 @@ services:
     container_name: patroni-1
     environment:
       - PATRONI_NAME=patroni-1
-      - SCOPE=postgres-cluster
-      - ETCD_HOSTS=etcd:2379
-      - ETCD_URL=http://etcd:2379
+      - PATRONI_SCOPE=postgres-cluster
+      - PATRONI_ETCD_HOSTS="etcd:2379"
+      - PATRONI_ETCD_URL=http://etcd:2379
       - PATRONI_RESTAPI_LISTEN=0.0.0.0:8008
       - PATRONI_RESTAPI_CONNECT_ADDRESS=patroni-1:8008
       - PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
       - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-1:5432
-      - PGDATA=/home/postgres/pgdata
       - PGUSER_SUPERUSER=postgres
       - PGPASSWORD_SUPERUSER=${POSTGRES_PASSWORD}
       - PGUSER_STANDBY=replicator
@@ -55,7 +54,7 @@ services:
       - PATRONI_POSTGRESQL_PG_HBA+=host all all 0.0.0.0/0 scram-sha-256
       - PATRONI_POSTGRESQL_PG_HBA+=host replication replicator 0.0.0.0/0 scram-sha-256
     volumes:
-      - ./data/patroni-1:/home/postgres/pgdata
+      - ./data/patroni-1:/home/postgres/pgroot/pgdata
     networks:
       - patroni-net
     ports:
@@ -71,14 +70,13 @@ services:
     container_name: patroni-2
     environment:
       - PATRONI_NAME=patroni-2
-      - SCOPE=postgres-cluster
-      - ETCD_HOSTS=etcd:2379
-      - ETCD_URL=http://etcd:2379
+      - PATRONI_SCOPE=postgres-cluster
+      - PATRONI_ETCD_HOSTS="etcd:2379"
+      - PATRONI_ETCD_URL=http://etcd:2379
       - PATRONI_RESTAPI_LISTEN=0.0.0.0:8008
       - PATRONI_RESTAPI_CONNECT_ADDRESS=patroni-2:8008
       - PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
       - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-2:5432
-      - PGDATA=/home/postgres/pgdata
       - PGUSER_SUPERUSER=postgres
       - PGPASSWORD_SUPERUSER=${POSTGRES_PASSWORD}
       - PGUSER_STANDBY=replicator
@@ -91,7 +89,7 @@ services:
       - PATRONI_POSTGRESQL_PG_HBA+=host all all 0.0.0.0/0 scram-sha-256
       - PATRONI_POSTGRESQL_PG_HBA+=host replication replicator 0.0.0.0/0 scram-sha-256
     volumes:
-      - ./data/patroni-2:/home/postgres/pgdata
+      - ./data/patroni-2:/home/postgres/pgroot/home/postgres/pgroot/pgdata
     networks:
       - patroni-net
     ports:
@@ -107,14 +105,13 @@ services:
     container_name: patroni-3
     environment:
       - PATRONI_NAME=patroni-3
-      - SCOPE=postgres-cluster
-      - ETCD_HOSTS=etcd:2379
-      - ETCD_URL=http://etcd:2379
+      - PATRONI_SCOPE=postgres-cluster
+      - PATRONI_ETCD_HOSTS="etcd:2379"
+      - PATRONI_ETCD_URL=http://etcd:2379
       - PATRONI_RESTAPI_LISTEN=0.0.0.0:8008
       - PATRONI_RESTAPI_CONNECT_ADDRESS=patroni-3:8008
       - PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
       - PATRONI_POSTGRESQL_CONNECT_ADDRESS=patroni-3:5432
-      - PGDATA=/home/postgres/pgdata
       - PGUSER_SUPERUSER=postgres
       - PGPASSWORD_SUPERUSER=${POSTGRES_PASSWORD}
       - PGUSER_STANDBY=replicator
@@ -127,7 +124,7 @@ services:
       - PATRONI_POSTGRESQL_PG_HBA+=host all all 0.0.0.0/0 scram-sha-256
       - PATRONI_POSTGRESQL_PG_HBA+=host replication replicator 0.0.0.0/0 scram-sha-256
     volumes:
-      - ./data/patroni-3:/home/postgres/pgdata
+      - ./data/patroni-3:/home/postgres/pgroot/pgdata
     networks:
       - patroni-net
     ports:
