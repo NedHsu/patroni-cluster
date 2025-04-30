@@ -1,0 +1,5 @@
+# 每天凌晨 2 點執行備份
+0 2 * * * /usr/local/bin/backup.sh
+
+# 每週日凌晨 3 點執行還原測試
+# 0 3 * * 0 /usr/local/bin/restore_test.sh 

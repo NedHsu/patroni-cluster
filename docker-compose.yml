@@ -53,8 +53,25 @@ services:
       - PATRONI_POSTGRESQL_PG_HBA+=host all all ::1/128 scram-sha-256
       - PATRONI_POSTGRESQL_PG_HBA+=host all all 0.0.0.0/0 scram-sha-256
       - PATRONI_POSTGRESQL_PG_HBA+=host replication replicator 0.0.0.0/0 scram-sha-256
+      - WALE_TMPDIR=/home/postgres/pgroot/tmp
+      - BACKUP_SCHEDULE='00 01 * * *'
+      - WAL_RESTORE_TIMEOUT=0
+      - USE_WALG_BACKUP=true
+      - USE_WALG_RESTORE=true
+      # - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      # - AWS_REGION=${AWS_REGION}
+      - WALG_COMPRESSION_METHOD=lz4
+      - WALG_BACKUP_COMPRESSION_METHOD=lz4
+      - WALG_UPLOAD_CONCURRENCY=4
+      - WALG_DOWNLOAD_CONCURRENCY=4
+      - WALG_DELTA_MAX_STEPS=1
+      - WALG_BACKUP_FROM_REPLICA=true
     volumes:
       - ./data/patroni-1:/home/postgres/pgroot/pgdata
+      - ./wal_archive:/home/postgres/pgroot/wal_archive
+      - ./backup.sh:/usr/local/bin/backup.sh:ro
+      - ./wal-g-config:/home/postgres/.wal-g
     networks:
       - patroni-net
     ports:
@@ -88,8 +105,25 @@ services:
       - PATRONI_POSTGRESQL_PG_HBA+=host all all ::1/128 scram-sha-256
       - PATRONI_POSTGRESQL_PG_HBA+=host all all 0.0.0.0/0 scram-sha-256
       - PATRONI_POSTGRESQL_PG_HBA+=host replication replicator 0.0.0.0/0 scram-sha-256
+      - WALE_TMPDIR=/home/postgres/pgroot/tmp
+      - BACKUP_SCHEDULE='00 01 * * *'
+      - WAL_RESTORE_TIMEOUT=0
+      - USE_WALG_BACKUP=true
+      - USE_WALG_RESTORE=true
+      # - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      # - AWS_REGION=${AWS_REGION}
+      - WALG_COMPRESSION_METHOD=lz4
+      - WALG_BACKUP_COMPRESSION_METHOD=lz4
+      - WALG_UPLOAD_CONCURRENCY=4
+      - WALG_DOWNLOAD_CONCURRENCY=4
+      - WALG_DELTA_MAX_STEPS=1
+      - WALG_BACKUP_FROM_REPLICA=true
     volumes:
-      - ./data/patroni-2:/home/postgres/pgroot/home/postgres/pgroot/pgdata
+      - ./data/patroni-2:/home/postgres/pgroot/pgdata
+      - ./wal_archive:/home/postgres/pgroot/wal_archive
+      - ./backup.sh:/usr/local/bin/backup.sh:ro
+      - ./wal-g-config:/home/postgres/.wal-g
     networks:
       - patroni-net
     ports:
@@ -123,8 +157,25 @@ services:
       - PATRONI_POSTGRESQL_PG_HBA+=host all all ::1/128 scram-sha-256
       - PATRONI_POSTGRESQL_PG_HBA+=host all all 0.0.0.0/0 scram-sha-256
       - PATRONI_POSTGRESQL_PG_HBA+=host replication replicator 0.0.0.0/0 scram-sha-256
+      - WALE_TMPDIR=/home/postgres/pgroot/tmp
+      - BACKUP_SCHEDULE='00 01 * * *'
+      - WAL_RESTORE_TIMEOUT=0
+      - USE_WALG_BACKUP=true
+      - USE_WALG_RESTORE=true
+      # - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      # - AWS_REGION=${AWS_REGION}
+      - WALG_COMPRESSION_METHOD=lz4
+      - WALG_BACKUP_COMPRESSION_METHOD=lz4
+      - WALG_UPLOAD_CONCURRENCY=4
+      - WALG_DOWNLOAD_CONCURRENCY=4
+      - WALG_DELTA_MAX_STEPS=1
+      - WALG_BACKUP_FROM_REPLICA=true
     volumes:
       - ./data/patroni-3:/home/postgres/pgroot/pgdata
+      - ./wal_archive:/home/postgres/pgroot/wal_archive
+      - ./backup.sh:/usr/local/bin/backup.sh:ro
+      - ./wal-g-config:/home/postgres/.wal-g
     networks:
       - patroni-net
     ports:

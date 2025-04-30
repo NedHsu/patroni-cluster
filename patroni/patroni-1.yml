@@ -39,6 +39,7 @@ postgresql:
     max_wal_senders: 10
     max_replication_slots: 10
     wal_keep_size: 64
+    synchronous_standby_names: 'ANY 1 ("patroni-2","patroni-3")'
   pg_hba:
     - local all all trust
     - host all all 127.0.0.1/32 scram-sha-256

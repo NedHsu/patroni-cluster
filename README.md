@@ -286,6 +286,8 @@ Password: ${PGADMIN_PASSWORD}
    - 如果複製失敗，檢查 pg_hba.conf 設定
    - 如果 HAProxy 無法連接，檢查 Patroni 健康狀態
 
+5. 文件:
+   - [spilo 環境變數](https://github.com/zalando/spilo/blob/master/ENVIRONMENT.rst)
 ---
 
 ## 📊 監控建議
@@ -316,3 +318,135 @@ Password: ${PGADMIN_PASSWORD}
 3. 備份驗證：
    - 定期測試備份還原
    - 驗證資料完整性
+
+## 備份和還原
+
+### WAL 歸檔配置
+
+1. 在 `docker-compose.yml` 中添加 WAL 歸檔目錄：
+```yaml
+volumes:
+  - ./wal_archive:/home/postgres/pgdata/pgroot/wal_archive
+```
+
+2. 在 Patroni 配置文件中添加 WAL 歸檔設定：
+```yaml
+postgresql:
+  parameters:
+    archive_mode: "on"
+    archive_command: 'test ! -f /home/postgres/pgdata/pgroot/wal_archive/%f && cp %p /home/postgres/pgdata/pgroot/wal_archive/%f'
+    archive_timeout: 60
+    wal_level: replica
+```
+
+### 備份策略
+
+1. **基礎備份**：
+```bash
+# 使用 pg_basebackup 創建基礎備份
+pg_basebackup -h localhost -p 5435 -U postgres -D /backup/pg_basebackup -Ft -z -P
+```
+
+2. **WAL 歸檔**：
+- WAL 文件會自動歸檔到 `./wal_archive` 目錄
+- 建議定期將歸檔文件備份到異地存儲
+
+3. **備份驗證**：
+```bash
+# 驗證 WAL 文件完整性
+pg_waldump /path/to/wal_archive/000000010000000000000001
+```
+
+### 還原步驟
+
+1. **準備還原環境**：
+```bash
+# 創建還原目錄
+mkdir -p /restore
+# 解壓基礎備份
+tar -xzf /backup/pg_basebackup/base.tar.gz -C /restore
+```
+
+2. **配置還原參數**：
+在 `/restore/postgresql.conf` 中添加：
+```conf
+restore_command = 'cp /path/to/wal_archive/%f %p'
+recovery_target_timeline = 'latest'
+```
+
+3. **創建還原標記文件**：
+```bash
+touch /restore/recovery.signal
+```
+
+4. **啟動還原實例**：
+```bash
+# 修改端口避免衝突
+sed -i 's/port = 5432/port = 5436/' /restore/postgresql.conf
+# 啟動 PostgreSQL
+pg_ctl -D /restore start
+```
+
+### 自動化備份腳本
+
+創建 `backup.sh` 腳本：
+```bash
+#!/bin/bash
+
+# 設置變量
+BACKUP_DIR="/backup"
+WAL_ARCHIVE_DIR="./wal_archive"
+DATE=$(date +%Y%m%d_%H%M%S)
+
+# 創建基礎備份
+pg_basebackup -h localhost -p 5435 -U postgres \
+    -D ${BACKUP_DIR}/pg_basebackup_${DATE} \
+    -Ft -z -P
+
+# 壓縮 WAL 歸檔
+tar -czf ${BACKUP_DIR}/wal_archive_${DATE}.tar.gz ${WAL_ARCHIVE_DIR}
+
+# 清理舊的備份（保留最近 7 天的備份）
+find ${BACKUP_DIR} -name "pg_basebackup_*" -mtime +7 -delete
+find ${BACKUP_DIR} -name "wal_archive_*" -mtime +7 -delete
+```
+
+### 監控備份狀態
+
+1. **檢查 WAL 歸檔狀態**：
+```sql
+SELECT * FROM pg_stat_archiver;
+```
+
+2. **檢查備份進度**：
+```sql
+SELECT * FROM pg_stat_progress_basebackup;
+```
+
+3. **設置備份監控告警**：
+- 監控 WAL 歸檔目錄大小
+- 檢查備份文件完整性
+- 設置備份失敗通知
+
+### 最佳實踐
+
+1. **備份策略**：
+- 每日進行基礎備份
+- 實時 WAL 歸檔
+- 定期異地備份
+- 定期備份驗證
+
+2. **存儲管理**：
+- 定期清理舊的 WAL 文件
+- 監控磁盤使用情況
+- 設置存儲告警閾值
+
+3. **安全考慮**：
+- 加密備份文件
+- 限制備份目錄訪問權限
+- 定期測試還原流程
+
+4. **性能優化**：
+- 使用並行備份
+- 調整 WAL 歸檔參數
+- 優化備份時間窗口
